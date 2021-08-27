@@ -14,13 +14,21 @@
     tmux
     vim
   ];
-
+  virtualisation.libvirtd.enable = true;
+   virtualisation.msize =1048576
+  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
   security.sudo.enable = true;
 
   users.users.root.password = "root";
 
   users.users.nixos = {
-    extraGroups = [ "wheel" ];
+    createHome = true;
+     group = "users";
+     home = "/home/nixos";
+     extraGroups =
+       [ "qemu-libvirtd" "libvirtd"
+         "wheel" "video" "audio" "disk" "networkmanager"
+       ];
     isNormalUser = true;
     password = "nixos";
   };
