@@ -15,7 +15,7 @@
     vim
   ];
   virtualisation.libvirtd.enable = true;
-   virtualisation.msize =1048576
+   virtualisation.msize =1048576;
   boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
   security.sudo.enable = true;
 
