@@ -1,4 +1,11 @@
-{ pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
+
+  nixpkgs = {
+    config = {
+      allowBroken = true;
+      allowUnfree = true;
+    };
+  };
 
   networking.firewall.enable = false;
 
