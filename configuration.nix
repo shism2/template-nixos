@@ -7,6 +7,29 @@
     };
   };
 
+  nix = {
+    package = pkgs.nixFlakes;
+    useSandbox = true;
+    autoOptimiseStore = true;
+    readOnlyStore = false;
+    allowedUsers = [ "@wheel" ];
+    trustedUsers = [ "@wheel" ];
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      keep-outputs = true
+      keep-derivations = true
+    '';
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d --max-freed $((64 * 1024**3))";
+    };
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
+    };
+
+  };
   networking.firewall.enable = false;
 
   services.openssh.enable = true;
@@ -19,10 +42,26 @@
     htop
     sudo
     tmux
+    vagrant
     vim
   ];
-  virtualisation.libvirtd.enable = true;
-   virtualisation.msize =1048576;
+
+virtualisation = {
+    docker = {
+      enable = true;
+      autoPrune.enable = true;
+      enableOnBoot = true;
+    };
+
+    libvirtd = {
+      enable=true;
+    };
+    msize =10485760;
+  };
+
+
+
+   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
   security.sudo.enable = true;
 
